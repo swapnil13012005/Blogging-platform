@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+    <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">Latest Posts</h2>
+    {% if posts %}
+        <div class="space-y-6">
+            {% for post in posts %}
+                <div class="bg-gray-50 p-6 rounded-lg shadow-sm border border-gray-200 hover:shadow-md transition duration-300">
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">
+                        <a href="{{ url_for('view_post', post_id=post.id) }}" class="text-blue-700 hover:text-blue-900 transition duration-300">{{ post.title }}</a>
+                    </h3>
+                    <p class="text-sm text-gray-500 mb-3">
+                        Published by <span class="font-medium text-purple-600">{{ post.author_username }}</span> on {{ post.created_at }}
+                    </p>
+                    <p class="text-gray-700 line-clamp-3">{{ post.content | truncate(200, true) }}</p>
+                    <div class="mt-4 text-right">
+                        <a href="{{ url_for('view_post', post_id=post.id) }}" class="text-blue-500 hover:underline font-medium">Read More &rarr;</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-gray-600 text-lg">No posts yet. {% if g.user %}<a href="{{ url_for('add_post') }}" class="text-blue-500 hover:underline">Be the first to add one!</a>{% else %}<a href="{{ url_for('register') }}" class="text-blue-500 hover:underline">Register</a> or <a href="{{ url_for('login') }}" class="text-blue-500 hover:underline">Log in</a> to add a post.{% endif %}</p>
+    {% endif %}
+{% endblock %}
